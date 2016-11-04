@@ -14,9 +14,15 @@ app.set('views', path.join(__dirname, 'views'));
 // 设置模板引擎为 ejs
 app.set('view engine', 'ejs');
 
+
 // 设置静态文件目录
 app.use(express.static(path.join(__dirname, 'public')));
 // session 中间件
+app.use(function(req,res,next){
+    console.log('================');
+    console.log(req.session);
+    next();
+})
 app.use(session({
     name: config.session.key,// 设置 cookie 中保存 session id 的字段名称
     secret: config.session.secret,// 通过设置 secret 来计算 hash 值并放在 cookie 中，使产生的 signedCookie 防篡改
@@ -27,6 +33,11 @@ app.use(session({
         url: config.mongodb// mongodb 地址
     })
 }));
+app.use(function(req,res,next){
+    console.log('================');
+    console.log(req.session);
+    next();
+})
 // flash 中间价，用来显示通知
 app.use(flash());
 app.use(require('express-formidable')({
